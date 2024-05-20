@@ -1,0 +1,10 @@
+1,¿Que se ejecuta al inicio de un bucle for en C++?,La condicion del bucle,La sentencia de inicializacion,La sentencia de incremento,El cuerpo del bucle,B,Bucles en C++
+2,¿Que bucle es mejor cuando el numero de iteraciones no se conoce de antemano en C++?,bucle for,bucle while,bucle do-while,bucle repeat-until,B,Bucles en C++
+3,¿Qué palabra clave causa una salida inmediata del bucle en C++?,break,exit,continue,stop,A,Bucles en C++
+4,¿Qué estructura de bucle verifica su condición al final del bucle en C++?,bucle for,bucle while,bucle do-while,bucle repeat,C,Bucles en C++
+5,¿Cuál es el propósito de la palabra clave continue dentro de un bucle en C++?,Detiene el bucle indefinidamente,Salta la iteración actual y procede con la siguiente,Sale del bucle después de completar todas las iteraciones,Restablece el bucle a su estado inicial,B,Bucles en C++
+6,¿Cómo puedes iterar sobre los elementos y sus índices en un array en C++?,Usando la función enumerate(),Usando la función items(),Usando la función keys(),Usando la función zip(),D,Bucles en C++
+7,¿Cómo se llama a un bucle que nunca termina en C++?,Bucle recursivo,Bucle infinito,Bucle sin fin,Bucle sin condición,B,Bucles en C++
+8,¿Cómo se describe un bucle anidado en C++?,Un bucle dentro de otro bucle,Un bucle que se ejecuta dentro de una función,Un bucle que se ejecuta concurrentemente con otro,Un bucle que se ejecuta exactamente una vez,A,Bucles en C++
+9,¿Qué palabra clave en C++ se usa para iterar sobre un array?,iterate,for,foreach,loop,B,Bucles en C++
+10,¿Qué resulta de la declaración for(int i = 0; i < 3; i++) en C++?,Genera números de 0 a 2,Genera números de 1 a 3,Genera números de 0 a 3,Genera números de 1 a 2,A,Bucles en C++
