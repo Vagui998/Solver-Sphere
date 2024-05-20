@@ -1,0 +1,23 @@
+type,example
+int,42
+int,10
+int,-1
+int,6
+int,0
+float,3.14
+float,-2.5
+float,5.678
+double,1234.5678
+double,-9876.5432
+double,-3.14159
+boolean,true
+boolean,false
+string,"maria"
+string,"pedro"
+string,"gato"
+string,"HOLA A TODOS"
+char,'a'
+char,'b'
+char,'c'
+char,'A'
+char,'B'

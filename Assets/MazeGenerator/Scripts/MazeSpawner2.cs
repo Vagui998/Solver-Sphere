@@ -1,0 +1,124 @@
+﻿using UnityEngine;
+
+public class MazeSpawner2 : MonoBehaviour
+{
+    public enum MazeGenerationAlgorithm
+    {
+        PureRecursive,
+        RecursiveTree,
+        RandomTree,
+        OldestTree,
+        RecursiveDivision,
+    }
+
+    public MazeGenerationAlgorithm Algorithm = MazeGenerationAlgorithm.PureRecursive;
+    public bool FullRandom = false;
+    public int RandomSeed = 12345;
+    public GameObject Floor = null;
+    public GameObject Wall = null;
+    public GameObject Pillar = null;
+    public int Rows = 5;
+    public int Columns = 5;
+    public float CellWidth = 5;
+    public float CellHeight = 5;
+    public bool AddGaps = true;
+    public GameObject GoalPrefab = null;
+    private int TotalGoals = 1;
+
+    private BasicMazeGenerator mMazeGenerator = null;
+
+    void Start()
+    {
+        if (!FullRandom)
+        {
+            Random.seed = RandomSeed;
+        }
+
+        switch (Algorithm)
+        {
+            case MazeGenerationAlgorithm.PureRecursive:
+                mMazeGenerator = new RecursiveMazeGenerator(Rows, Columns);
+                break;
+            case MazeGenerationAlgorithm.RecursiveTree:
+                mMazeGenerator = new RecursiveTreeMazeGenerator(Rows, Columns);
+                break;
+            case MazeGenerationAlgorithm.RandomTree:
+                mMazeGenerator = new RandomTreeMazeGenerator(Rows, Columns);
+                break;
+            case MazeGenerationAlgorithm.OldestTree:
+                mMazeGenerator = new OldestTreeMazeGenerator(Rows, Columns);
+                break;
+            case MazeGenerationAlgorithm.RecursiveDivision:
+                mMazeGenerator = new DivisionMazeGenerator(Rows, Columns);
+                break;
+        }
+
+        mMazeGenerator.GenerateMaze();
+
+        // Set the goal explicitly at (3,3) after maze generation
+        if (Rows > 3 && Columns > 3)
+        {
+            mMazeGenerator.GetMazeCell(0, 0).IsGoal = true;
+        }
+
+        Vector3 startPosition = transform.position;
+        startPosition.Set(startPosition.x - 13f, startPosition.y, startPosition.z - 13f);
+
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int column = 0; column < Columns; column++)
+            {
+                float x = startPosition.x + column * (CellWidth + (AddGaps ? 0.2f : 0));
+                float z = startPosition.z + row * (CellHeight + (AddGaps ? 0.2f : 0));
+                MazeCell cell = mMazeGenerator.GetMazeCell(row, column);
+                GameObject tmp;
+                tmp = Instantiate(Floor, new Vector3(x, startPosition.y, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                tmp.transform.parent = transform;
+
+                if (cell.WallRight)
+                {
+                    tmp = Instantiate(Wall, new Vector3(x + CellWidth / 2, startPosition.y, z) + Wall.transform.position, Quaternion.Euler(0, 90, 0)) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+                if (cell.WallFront)
+                {
+                    tmp = Instantiate(Wall, new Vector3(x, startPosition.y, z + CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+                if (cell.WallLeft)
+                {
+                    tmp = Instantiate(Wall, new Vector3(x - CellWidth / 2, startPosition.y, z) + Wall.transform.position, Quaternion.Euler(0, 270, 0)) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+                if (cell.WallBack)
+                {
+                    tmp = Instantiate(Wall, new Vector3(x, startPosition.y, z - CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+                if (cell.IsGoal && GoalPrefab != null)
+                {
+                    tmp = Instantiate(GoalPrefab, new Vector3(x, startPosition.y + 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+            }
+        }
+        if (Pillar != null)
+        {
+            for (int row = 0; row < Rows + 1; row++)
+            {
+                for (int column = 0; column < Columns + 1; column++)
+                {
+                    float x = startPosition.x + column * (CellWidth + (AddGaps ? 0.2f : 0));
+                    float z = startPosition.z + row * (CellHeight + (AddGaps ? 0.2f : 0));
+                    GameObject tmp = Instantiate(Pillar, new Vector3(x - CellWidth / 2, startPosition.y, z - CellHeight / 2), Quaternion.identity) as GameObject;
+                    tmp.transform.parent = transform;
+                }
+            }
+        }
+    }
+
+    public int GetTotalCoinsGenerated()
+    {
+        return TotalGoals;
+    }
+}
